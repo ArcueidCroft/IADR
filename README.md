@@ -27,7 +27,7 @@ All four generators use the periodic domain $[0,1]^2$ with a default
 $256\times256$ grid. The parameter ranges below describe the **bundled
 shell launchers**. Each panel shows five frames from one existing dataset
 sample at $\varepsilon=0.0078$; generation commands are in Section 5.2.
-
+![IADR](assets/fig/IADR_architecture.png)
 ### 2.2 Circle
 
 Circular initial regions vary in size and position:
