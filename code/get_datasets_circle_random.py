@@ -58,17 +58,19 @@ def main():
 
     parser.add_argument("--grid",        type=int,   default=256)
     parser.add_argument("--steps",       type=int,   default=199,
-                        help="...T=steps+1 ... 699 ... 700 ... circle ... 18 GB/eps/100 sample...")
+                        help="演化步数；T=steps+1 帧。用 699 可得 700 帧（与原 circle 数据集一致，但文件约 18 GB/eps/100 sample）")
     parser.add_argument("--num-samples", type=int,   default=100)
     parser.add_argument("--dt",          type=float, default=None)
     parser.add_argument("--save-dir",    type=str,   default="./std_test_datasets/circle")
 
     parser.add_argument("--epsilon-list", type=str,  default="0.0078",
-                        help="... epsilon ...sh ...")
+                        help="逗号分隔的 epsilon 列表；sh 里每次只传一个")
 
+    # 圆半径随机范围
     parser.add_argument("--radius-min",  type=float, default=0.25)
     parser.add_argument("--radius-max",  type=float, default=0.35)
 
+    # 圆心随机范围（域 [0,1]^2 内；0.5 = 中心）
     parser.add_argument("--center-x-range", type=float, nargs=2, default=[0.47, 0.53],
                         metavar=("LO", "HI"))
     parser.add_argument("--center-y-range", type=float, nargs=2, default=[0.47, 0.53],

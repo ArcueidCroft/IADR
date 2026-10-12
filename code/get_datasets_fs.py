@@ -115,9 +115,9 @@ def main():
 
     # New range knobs
     parser.add_argument("--n-arms-range", type=float, nargs=2, default=None,
-                        metavar=("LO", "HI"), help="...")
+                        metavar=("LO", "HI"), help="整数；浮点输入会四舍五入")
     parser.add_argument("--arm-polygon-sides-range", type=float, nargs=2, default=None,
-                        metavar=("LO", "HI"), help="...")
+                        metavar=("LO", "HI"), help="整数；浮点输入会四舍五入")
     parser.add_argument("--arm-outer-radius-range", type=float, nargs=2, default=None,
                         metavar=("LO", "HI"))
     parser.add_argument("--arm-shift-x-range", type=float, nargs=2, default=None,
@@ -133,7 +133,7 @@ def main():
 
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--random-rotate", action="store_true",
-                        help="... global_rotation ... [0, 2π] ...")
+                        help="开则 global_rotation 在 [0, 2π] 均匀随机")
 
     parser.add_argument("--prefix", type=str, default="star_dataset")
     args = parser.parse_args()

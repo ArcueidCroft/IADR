@@ -118,10 +118,10 @@ def main():
                         metavar=("LO", "HI"))
     parser.add_argument("--ripple-r-freq-range", type=float, nargs=2, default=None,
                         metavar=("LO", "HI"),
-                        help="...")
+                        help="径向频率，整数；浮点输入会四舍五入")
     parser.add_argument("--ripple-theta-freq-range", type=float, nargs=2, default=None,
                         metavar=("LO", "HI"),
-                        help="...")
+                        help="角向频率，整数；浮点输入会四舍五入")
     parser.add_argument("--center-x-range", type=float, nargs=2, default=None,
                         metavar=("LO", "HI"))
     parser.add_argument("--center-y-range", type=float, nargs=2, default=None,
@@ -129,7 +129,7 @@ def main():
 
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--random-rotate", action="store_true",
-                        help="... rotation_angle ... [0, 2π] ... --rotation-angle ...")
+                        help="开则 rotation_angle 在 [0, 2π] 均匀随机；关则用 --rotation-angle 固定值")
 
     parser.add_argument("--prefix", type=str, default="spiral_dataset")
 

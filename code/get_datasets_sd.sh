@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
+# 用 get_datasets_sd_random.py 在指定 ε 上生成"温和扰动"螺旋圆盘数据集。
+# 区间围绕原 baseline (radius=0.3, amp=0.08, r_freq=10, theta_freq=5, center=(0.5,0.5))
+# 窄幅抖动；中心固定在域正中央 (0.5, 0.5)；theta_freq 固定为 5 瓣；
+# 朝向 0~2π 随机。每个 ε 一份 npy，独立 seed 保证不撞同一组初始构型。
 set -e
 
-OUT_DIR="./bootstrap_test_datasets/spiral_disk"
+OUT_DIR="./bootstrap_test_datasets_wide/spiral_disk"
 GRID=256
 STEPS=250
-N_PER_EPS=100
+N_PER_EPS=35
 
 declare -a EPS_SEED=(
     "0.0078 42"
-    "0.0093 43"
-    "0.0069 44"
+    "0.0120 43"
+    "0.0047 44"
 )
 
 for entry in "${EPS_SEED[@]}"; do
