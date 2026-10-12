@@ -1,4 +1,5 @@
-# IADR — Code & Data Supplement
+# IADR — Source Code
+IADR: Interface-Augmented Neural Operator for Phase-Field Mean-Curvature Flow, 40th Conference on Neural Information Processing Systems (NeurIPS 2026).
 
 ## 1. Introduction
 
