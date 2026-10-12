@@ -443,25 +443,3 @@ with the bootstrap mean, std, and CI for every metric, plus the per-step
 inference timings.
 
 ---
-
-
-## 10. Notes and caveats
-
-* **Full dataset.** The full standard training set (`train_dataset_5.npy` =
-  `(5, 2, 100, 1, 256, 256)` and `valid_dataset_5.npy` =
-  `(5, 6, 200, 1, 256, 256)`, both float64) is roughly 1.8 GB, which is why we
-  ship a sliced 80 MB subset. The DISCO-context variant
-  (`(5, 17, 100, ...)`, `(5, 22, 100, ...)`) is larger again and is generated
-  on demand by `get_datasets_circle_random.py`.
-* **Trained checkpoints are not released.** Reviewers can train from scratch
-  with `nnpf train` against the configs above; under the protocol of the paper
-  this takes between 3 h and 72 h per model on a single V100.
-* **Two `DR1` definitions.** `models_IADR.py` and `models_per_epsilon.py` each
-  define a `DR1` (and a `DR2`) class. The yaml configs in `config/` always
-  name the source file explicitly through the `model:` field, so there is no
-  ambiguity at runtime. If you import `DR1` from Python directly, pick the
-  file matching your use case.
-* **Post-acceptance release.** The full source repository, the trained
-  checkpoints, the bootstrap evaluation logs, and the dataset-generation
-  pipeline will be released on GitHub upon acceptance, under the Apache-2.0
-  licence.
