@@ -234,10 +234,10 @@ The downloaded launchers currently use these settings:
 
 | Geometry | Epsilon values | Samples per epsilon | Saved frames | Output directory, relative to `code/` |
 |----------|----------------|---------------------|--------------|--------------------------------------|
-| Circle | `0.0078, 0.0120, 0.0047` | 35 | 700 | `bootstrap_test_datasets_wide/circle/` |
-| SD | `0.0078, 0.0120, 0.0047` | 35 | 251 | `bootstrap_test_datasets_wide/spiral_disk/` |
-| FS | `0.0078, 0.0120, 0.0047` | 35 | 251 | `bootstrap_test_datasets_wide/five_stars/` |
-| Dumbbell | `0.0069, 0.0078, 0.0090` | 40 | 251 | `bootstrap_test_datasets_n40/dumbbell/` |
+| Circle | `0.0078, 0.0120, 0.0047` | 100 | 700 | `bootstrap_test_datasets_wide/circle/` |
+| SD | `0.0078, 0.0120, 0.0047` | 100 | 251 | `bootstrap_test_datasets_wide/spiral_disk/` |
+| FS | `0.0078, 0.0120, 0.0047` | 100 | 251 | `bootstrap_test_datasets_wide/five_stars/` |
+| Dumbbell | `0.0069, 0.0078, 0.0090` | 100 | 251 | `bootstrap_test_datasets_n40/dumbbell/` |
 
 All four launchers use a `256 x 256` grid. The saved frame count is
 `STEPS + 1`, including the initial state. Change the epsilon list, `GRID`,
@@ -256,7 +256,7 @@ For example, a single-epsilon circle dataset can be generated with:
 ```bash
 python get_datasets_circle_random.py \
     --epsilon-list 0.0078 \
-    --num-samples 35 --steps 699 --grid 256 \
+    --num-samples 100 --steps 699 --grid 256 \
     --dt 6.103515625e-5 --seed 42 \
     --radius-min 0.25 --radius-max 0.35 \
     --center-x-range 0.47 0.53 --center-y-range 0.47 0.53 \
