@@ -1,0 +1,31 @@
+# Per-eps DR specialist template (paper Section 4.1, "Per-eps DR" baseline).
+# Train one specialist per epsilon by duplicating this file and replacing:
+#   - version           : encodes the eps and seed, e.g. DR1_0_0078_s0
+#   - train_u, train_eps : per-eps training tensors for the chosen eps
+#   - valid_u, valid_eps : per-eps validation tensors
+# The paper trains 8 specialists at the eps values
+#   {0.0065, 0.0069, 0.0072, 0.0078, 0.0081, 0.008425, 0.0090, 0.0093}.
+
+model: models_per_epsilon.py:DR1
+version: DR1_per_eps_TEMPLATE
+bounds: [[0., 1.], [0., 1.]]
+N: 256
+check_val_every_n_epoch: 5
+
+# DR1 architecture (matches the IADR target network)
+kernel_size: 17
+kernel_init: zeros
+layers: [8, 3]
+activation: GaussActivation
+
+# optimisation
+lr: 1e-4
+seed: 0
+max_epochs: 20000
+
+# data: replace the four paths below with the single-eps dataset
+# corresponding to the eps you want this specialist trained on.
+train_u: train_datasets/single_eps/0078/train.npy
+train_eps: train_datasets/single_eps/0078/train_eps.npy
+valid_u: train_datasets/single_eps/0078/valid.npy
+valid_eps: train_datasets/single_eps/0078/valid_eps.npy

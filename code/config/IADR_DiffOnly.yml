@@ -1,0 +1,30 @@
+# Hyper-D ablation: the hypernetwork emits only the diffusion-block (HeatArray)
+# weights; the reaction block uses an eps-agnostic shared parameter vector that
+# is jointly trained with the hypernetwork.
+model: models_ours_ablation.py:IADR_DiffOnly
+version: IADR_DiffOnly
+bounds: [[0., 1.], [0., 1.]]
+N: 256
+check_val_every_n_epoch: 5
+kernel_size: 17
+kernel_init: zeros
+layers: [8, 3]
+activation: GaussActivation
+lr: 1e-4
+seed: 0
+max_epochs: 20000
+
+# 
+hyper_hidden_dim: 256
+hyper_n_layers: 3
+norm_factor: 2.0
+
+# epsilon normalisation range
+eps_min: 0.0065
+eps_max: 0.0090
+
+# data
+train_u: train_datasets/train_std/train_dataset_5.npy
+train_eps: train_datasets/train_std/train_dataset_eps_5.npy
+valid_u: train_datasets/train_std/valid_dataset_5.npy
+valid_eps: train_datasets/train_std/valid_dataset_eps_5.npy

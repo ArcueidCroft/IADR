@@ -1,0 +1,8 @@
+model: models_per_epsilon.py:DR1
+bounds: [[0., 1.], [0., 1.]]
+N: 256
+check_val_every_n_epoch: 20
+kernel_size: 17
+lr: 1e-4
+seed: 0
+max_epochs: 20000

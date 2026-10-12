@@ -1,0 +1,15 @@
+model: models_FNO.py:FNO_Epsilon
+version: FNO_concat
+bounds: [[0., 1.], [0., 1.]]
+N: 256
+check_val_every_n_epoch: 5
+lr: 1e-4
+seed: 0
+max_epochs: 20000
+fno_width: 32
+fno_modes: 12
+fno_layers: 4
+train_u: train_datasets/train_std/train_dataset_5.npy
+train_eps: train_datasets/train_std/train_dataset_eps_5.npy
+valid_u: train_datasets/train_std/valid_dataset_5.npy
+valid_eps: train_datasets/train_std/valid_dataset_eps_5.npy

@@ -1,0 +1,26 @@
+# Blind DR baseline (paper Section 4.4): the first-order DR splitting
+# network trained on the pooled five-eps training set, with no eps
+# input to the network. The DR1 class in models_per_epsilon.py sees
+# only the phase-field tensor; train_eps / valid_eps fields are
+# deliberately omitted so the model is eps-agnostic.
+
+model: models_per_epsilon.py:DR1
+version: BlindDR_5eps_s0
+bounds: [[0., 1.], [0., 1.]]
+N: 256
+check_val_every_n_epoch: 5
+
+# DR1 architecture (matches IADR target network)
+kernel_size: 17
+kernel_init: zeros
+layers: [8, 3]
+activation: GaussActivation
+
+# optimisation
+lr: 1e-4
+seed: 0
+max_epochs: 20000
+
+# data: pooled five-eps dataset; eps file is intentionally NOT listed
+train_u: train_datasets/train_std/train_dataset_5.npy
+valid_u: train_datasets/train_std/valid_dataset_5.npy

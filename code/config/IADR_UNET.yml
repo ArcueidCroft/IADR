@@ -1,0 +1,31 @@
+model: models_disco_unet.py:UNet_DISCO
+version: DISCO_UNet_s1
+bounds: [[0., 1.], [0., 1.]]
+N: 256
+check_val_every_n_epoch: 5
+lr: 1e-4
+seed: 1
+max_epochs: 20000
+
+# U-Net target template (DISCO paper App. C.0.1 defaults)
+unet_base_channels: 8       # starting channel count c0
+unet_depth: 4               # number of down/up-sampling levels
+unet_bottleneck_mult: 2     # channel multiplier inside the bottleneck (128 -> 256 -> 128)
+
+# 
+# Note: the U-Net target has ~450k parameters; the hypernetwork output layer
+# has shape hyper_hidden_dim x opnn_params. With hidden_dim=128 the hypernet
+# is ~58M parameters; raise it only after confirming GPU memory headroom.
+hyper_hidden_dim: 128
+hyper_n_layers: 3
+norm_factor: 2.0
+
+# epsilon normalisation range
+eps_min: 0.0065
+eps_max: 0.0090
+
+# data
+train_u: train_datasets/train_std/train_dataset_5.npy
+train_eps: train_datasets/train_std/train_dataset_eps_5.npy
+valid_u: train_datasets/train_std/valid_dataset_5.npy
+valid_eps: train_datasets/train_std/valid_dataset_eps_5.npy

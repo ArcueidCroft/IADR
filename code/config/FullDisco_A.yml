@@ -1,0 +1,62 @@
+# Full DISCO variant A training config (paired with
+# models_full_disco_A_runnable.py:FullDiscoA_Run).
+#
+# Prerequisites:
+#   - models_full_disco_A.py and models_full_disco_A_runnable.py must be on
+#     the import path (they live next to this file in the supplement)
+#   - $DISCO_ROOT must point at the DISCO upstream repository (the launcher
+#     script exports it before training)
+#   - pip install timm einops
+#   - train_u / valid_u must be float arrays of shape (E, T_total, N, 1, H, W)
+#     with T_total >= n_past + train_steps (default 16 + 1 = 17)
+#
+# Adjust the four data paths below to match your local layout.
+model: models_full_disco_A_runnable.py:FullDiscoA_Run
+version: FullDisco_A_s0
+seed: 0
+
+# physical / problem
+bounds: [[0., 1.], [0., 1.]]
+N: 256
+batch_size: 1                  # V100 + ODE adjoint is tight; start at 1, raise to 2 after the first epoch runs
+batch_shuffle: true
+lr: 1.0e-4                     # DISCO uses cosine but does not pin a base lr; 1e-4 is a safe start
+loss_norms: [[2, 1.0]]
+loss_power: 2.0
+check_val_every_n_epoch: 5
+
+# DISCO defaults (Morel 2025)
+ode_max_steps: 32              # bosh3 ODE max integration steps (CLI flag --ode_max_steps avoids the PL --max_steps clash)
+rtol: 5.0e-6
+norm_factor: 2.0               # signed_sigmoid factor
+n_past: 16                     # context length T; do not change (DISCO is hard-coded to 16)
+patch_size: 16
+embed_dim: 384
+hpnn_head_hidden_dim: 384
+processor_blocks: 12
+num_heads: 6
+bias_type: rel
+drop_path: 0.1
+hpnn_groups: 12
+opnn_start: 8
+opnn_norm_groups: 4
+
+# Stability parameters from the DISCO paper
+weight_decay: 1.0e-3           # paper: 0.001
+gradient_clip_val: 1.0         # paper: default norm of 1.0
+
+# training schedule
+max_epochs: 50                 # T_total=100 reaches convergence within 50 epochs; for T=17 short data, raise to 100
+train_steps: 1                 # multipoint K (K future targets per sample contribute to the loss)
+num_workers: 0                 # raise to 4 on a high-RAM machine
+mmap: true
+force_float32: false
+
+# data: point these to the DISCO-context (n_past=16) npy files generated
+# for the circle dataset; see README.md, Section 3.2.
+# train: (5, 17, 100, 1, 256, 256) -> T_total=17 yields exactly one window per trajectory; if budget allows, regenerate at T_total>=100.
+# valid: (5, 22, 200, 1, 256, 256) -> six windows per trajectory.
+train_u: ./test_datasets_disco/train_dataset.npy
+train_eps: ./test_datasets_disco/train_dataset_eps.npy
+valid_u: ./test_datasets_disco/valid_dataset.npy
+valid_eps: ./test_datasets_disco/valid_dataset_eps.npy
