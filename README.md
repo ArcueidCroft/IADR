@@ -233,12 +233,12 @@ DEVICE=cuda bash generate_dumbbell_datasets.sh
 
 The downloaded launchers currently use these settings:
 
-| Geometry | Epsilon values | Samples per epsilon | Saved frames | Output directory, relative to `code/` |
-|----------|----------------|---------------------|--------------|--------------------------------------|
-| Circle | `0.0078, 0.0120, 0.0047` | 100 | 700 | `bootstrap_test_datasets_wide/circle/` |
-| SD | `0.0078, 0.0120, 0.0047` | 100 | 251 | `bootstrap_test_datasets_wide/spiral_disk/` |
-| FS | `0.0078, 0.0120, 0.0047` | 100 | 251 | `bootstrap_test_datasets_wide/five_stars/` |
-| Dumbbell | `0.0069, 0.0078, 0.0090` | 100 | 251 | `bootstrap_test_datasets_n40/dumbbell/` |
+| Geometry  | Samples per epsilon | Saved frames | Output directory, relative to `code/` |
+|----------|---------------------|--------------|--------------------------------------|
+| Circle | 100 | 700 | `bootstrap_test_datasets_wide/circle/` |
+| SD | 100 | 251 | `bootstrap_test_datasets_wide/spiral_disk/` |
+| FS | 100 | 251 | `bootstrap_test_datasets_wide/five_stars/` |
+| Dumbbell| 100 | 251 | `bootstrap_test_datasets_n40/dumbbell/` |
 
 All four launchers use a `256 x 256` grid. The saved frame count is
 `STEPS + 1`, including the initial state. Change the epsilon list, `GRID`,
