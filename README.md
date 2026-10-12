@@ -5,6 +5,8 @@ IADR: Interface-Augmented Neural Operator for Phase-Field Mean-Curvature Flow, 4
 
 The Allen–Cahn equation is one of the standard phase-field models for mean-curvature flow (MCF), parameterised by the diffuse-interface width $\varepsilon$. Practical simulations span a working range of $\varepsilon$, so a single model covering this range is needed. PDE-specific neural operators are accurate but must be retrained at every $\varepsilon$; general neural operators cover $\varepsilon$ in one model but lose the phase-field structure of the target. We introduce Interface-Augmented Diffusion-Reaction (IADR), a neural operator that addresses both shortcomings: a target network with a diffusion-and-reaction structure preserves the phase-field structure of the Allen–Cahn equation, while a hypernetwork that maps $\varepsilon$ to the weights of this target network amortises the dependence on $\varepsilon$ across the working range. A single IADR matches the per-$\varepsilon$ specialists on in-distribution data within the prescribed working range, retains their cross-shape generalisation under both $\varepsilon$- and geometry-out-of-distribution shifts, and retains their compact DR target structure with millisecond-scale inference. We further establish a conditional $K$-step rollout error bound under consistency and stability assumptions.
 
+![IADR](assets/fig/IADR_architecture.png)
+
 ---
 
 ## 2. Model and datasets
@@ -27,7 +29,7 @@ All four generators use the periodic domain $[0,1]^2$ with a default
 $256\times256$ grid. The parameter ranges below describe the **bundled
 shell launchers**. Each panel shows five frames from one existing dataset
 sample at $\varepsilon=0.0078$; generation commands are in Section 5.2.
-![IADR](assets/fig/IADR_architecture.png)
+
 ### 2.2 Circle
 
 Circular initial regions vary in size and position:
