@@ -444,41 +444,8 @@ inference timings.
 
 ---
 
-## 10. Reproducing the paper's tables and figures
 
-The table below names the script that *produces* each paper artefact;
-**bit-reproducing the reported numbers is not possible from this supplement
-alone**, because (a) the shipped training data is the 80 MB sliced subset and
-(b) trained checkpoints are not bundled. To match the paper's numbers,
-regenerate the full datasets per Section 5.2, retrain every model under the
-protocol of Section 8, then run the evaluation pipeline of Section 9.
-
-| Paper artefact                     | How it is produced                                                                                                              |
-|------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| Table 1 (`tab:main`)               | Eight training runs (one per baseline) → `run_dr1_bootstrap_serial.sh` → `log_to_xlsx_bootstrap.py`. Bootstrap mean of every cell goes to Table 1. |
-| Table 2 (`tab:step-time`)          | The same xlsx; column `step_time_per_sample_mean` is averaged across eps within each shape.                                     |
-| Table E.1 (`tab:main-full`, App. E)| Same xlsx as Table 1; column shows `mean ± boot_std`.                                                                            |
-| Table F.1 (`tab:ablation`, App. F) | Three additional training runs (Blind DR + Hyper-D + Hyper-R) → same evaluation pipeline → same xlsx.                            |
-| Figure 1 (architecture)            | Static schematic, included as `fig/IADR_architecture.png` in the paper repository.                                              |
-| Figure 2 (case study)              | Per-cell rollout trajectories saved by `test_dr1_bootstrap.py --save_rollout_preds`, then composited with a small plotting script (released with the GitHub version). |
-| Figure E.1 (case study, App. E)    | Same procedure on the spiral-disk geometry-OOD cell.                                                                            |
-
-The xlsx column names map to paper notation as follows:
-
-| xlsx model_id           | paper baseline       |
-|-------------------------|----------------------|
-| `IADR_s1`          | IADR                 |
-| `DR1_0_<eps>_s<seed>`   | per-eps DR specialist (trained at the encoded eps) |
-| `DISCO_UNet`            | U-Net variant        |
-| `FNO_concat`            | FNO                  |
-| `FullDisco_A_s0`        | DISCO                |
-| `BlindDR_5eps_s0`       | Blind DR             |
-| `IADR_DiffOnly`    | Hyper-D              |
-| `IADR_ReactOnly`   | Hyper-R              |
-
----
-
-## 11. Notes and caveats
+## 10. Notes and caveats
 
 * **Full dataset.** The full standard training set (`train_dataset_5.npy` =
   `(5, 2, 100, 1, 256, 256)` and `valid_dataset_5.npy` =
@@ -498,4 +465,3 @@ The xlsx column names map to paper notation as follows:
   checkpoints, the bootstrap evaluation logs, and the dataset-generation
   pipeline will be released on GitHub upon acceptance, under the Apache-2.0
   licence.
-# IADR
