@@ -98,60 +98,8 @@ zero-based frame labels.*
 
 ---
 
-## 3. Repository layout
 
-```
-material/
-├── README.md                       (this file)
-├── assets/datasets/                # one sample panel per dataset
-├── code/
-│   ├── config/                     # 9 YAML configs, one per baseline (+ template + Blind DR)
-│   │   ├── IADR.yml                  # IADR
-│   │   ├── IADR_DiffOnly.yml         # Hyper-D ablation
-│   │   ├── IADR_ReactOnly.yml        # Hyper-R ablation
-│   │   ├── IADR_UNET.yml             # U-Net variant
-│   │   ├── DR1_blind_5eps.yml             # Blind DR ablation
-│   │   ├── DR1_per_eps_template.yml       # template for the 8 per-eps specialists
-│   │   ├── FNO_concat.yml                 # FNO baseline
-│   │   ├── DR1_temp.yml                   # bare DR1 schedule template
-│   │   └── FullDisco_A.yml                # DISCO baseline
-│   │
-│   ├── models_IADR.py              # IADR (IADR class) and the higher-order IADR2
-│   ├── models_per_epsilon.py       # per-eps DR / Blind DR (DR1, DR2 standalone classes)
-│   ├── models_disco_unet.py        # U-Net variant target (UNet_DISCO)
-│   ├── models_FNO.py               # FNO baseline (FNO_Epsilon, FNO_Epsilon_FiLM)
-│   ├── models_full_disco_A.py      # DISCO baseline core
-│   ├── models_full_disco_A_runnable.py  # PL wrapper of DISCO with our dataloader
-│   ├── models_ours_ablation.py     # Hyper-D, Hyper-R ablation classes
-│   │
-│   ├── get_datasets_circle_random.{py,sh}  # circle dataset generation
-│   ├── get_datasets_fs.{py,sh}             # five-pointed-star dataset generation
-│   ├── get_datasets_sd.{py,sh}             # spiral-disk dataset generation
-│   ├── get_datasets_dumbbell.py            # dumbbell decomposition dataset generation
-│   ├── generate_dumbbell_datasets.sh       # dumbbell batch launcher
-│   │
-│   ├── test_dr1_bootstrap.py       # rollout evaluation + bootstrap per-metric statistics
-│   ├── log_to_xlsx_bootstrap.py    # parse rollout logs → consolidated xlsx
-│   ├── run_dr1_bootstrap_serial.sh # batch evaluation driver across (model, shape, eps)
-│   └── train0.sh                   # per-eps training sweep template
-│
-└── datasets_light/
-    └── train_std_small/            # 80 MB sliced subset of the standard training set
-        ├── train_dataset_5.npy           # (5, 2, 8, 1, 256, 256), float64
-        ├── train_dataset_eps_5.npy       # (5,), the five training eps values
-        ├── valid_dataset_5.npy           # (5, 6, 8, 1, 256, 256), float64
-        └── valid_dataset_eps_5.npy       # (5,)
-```
-
-The `datasets_light/` subset is sliced from the full ~1.8 GB standard training
-set so that the package fits a typical supplementary-material size budget.
-It is large enough for every model class to *load and train for a few epochs*
-on representative data; reproducing the paper's reported metrics requires
-regenerating the full dataset (see Section 6).
-
----
-
-## 4. Installation
+## 3. Installation
 
 The minimum environment for IADR, the per-eps DR specialists, the U-Net
 variant, the FNO baseline, and the Hyper-D / Hyper-R / Blind DR ablations is
@@ -185,9 +133,9 @@ A Python version of 3.9 or newer is recommended; we tested under CUDA on a singl
 
 ---
 
-## 5. Data
+## 4. Data
 
-### 5.1 What is in `datasets_light/`
+### 4.1 What is in `datasets_light/`
 
 `datasets_light/train_std_small/` contains the sliced *standard-variant*
 training data used by every model in the paper except the DISCO baseline:
@@ -210,7 +158,7 @@ included in this lightweight subset; regenerate it with
 single-eps datasets used by the per-eps DR specialists in
 `config/DR1_per_eps_template.yml` are not in the subset.
 
-### 5.2 Generating circle, SD, FS, and dumbbell datasets
+### 4.2 Generating circle, SD, FS, and dumbbell datasets
 
 The four generators and their launchers are in `code/`. These launchers
 produce rollout/test datasets; they do not create the standard or DISCO
@@ -284,7 +232,7 @@ dumbbell dataset is intended.
 
 ---
 
-## 6. Quickstart
+## 5. Quickstart
 
 The smallest end-to-end check is to train IADR for a handful of epochs on the
 sliced data and evaluate the resulting checkpoint. From `material/`:
@@ -315,7 +263,7 @@ reproducing the paper's reported numbers, which require the full dataset and
 
 ---
 
-## 7. Models and configs
+## 6. Models and configs
 
 The eight rows of the paper's main results table map onto the following files:
 
@@ -339,7 +287,7 @@ independent.
 
 ---
 
-## 8. Training
+## 7. Training
 
 All training entry points use the `nnpf` CLI, which reads the YAML and
 dispatches to the model class named in its `model:` field:
@@ -353,7 +301,7 @@ Every config writes into `code/logs/<version>/`, where `<version>` is the YAML
 `version:` field. Override individual hyperparameters from the CLI with
 `--max_epochs N`, `--seed S`, etc.
 
-### 8.1 IADR and the partial-conditioning ablations
+### 7.1 IADR and the partial-conditioning ablations
 
 ```bash
 nnpf train config/IADR.yml             # IADR
@@ -362,7 +310,7 @@ nnpf train config/IADR_ReactOnly.yml   # Hyper-R ablation
 nnpf train config/IADR_UNET.yml        # U-Net variant
 ```
 
-### 8.2 Per-eps DR specialists
+### 7.2 Per-eps DR specialists
 
 The paper trains eight specialists at the eps values
 `{0.0065, 0.0069, 0.0072, 0.0078, 0.0081, 0.008425, 0.0090, 0.0093}`. The
@@ -372,7 +320,7 @@ each target eps, copy the template and replace its `version:`, `train_u`,
 eps dataset. `train0.sh` is a shell-driven sweep template that automates this
 substitution and launches the eight runs one at a time.
 
-### 8.3 Blind DR
+### 7.3 Blind DR
 
 ```bash
 nnpf train config/DR1_blind_5eps.yml
@@ -381,13 +329,13 @@ nnpf train config/DR1_blind_5eps.yml
 This trains a `DR1` instance on the pooled five-eps training tensor without
 any eps input, providing the eps-agnostic baseline reported in Section 4.4.
 
-### 8.4 FNO
+### 7.4 FNO
 
 ```bash
 nnpf train config/FNO_concat.yml
 ```
 
-### 8.5 DISCO baseline
+### 7.5 DISCO baseline
 
 The DISCO config requires the supplementary environment of Section 4:
 
@@ -404,7 +352,7 @@ validation tensors with `get_datasets_circle_random.py` before training.
 
 ---
 
-## 9. Evaluation
+## 8. Evaluation
 
 A single rollout evaluation reads a checkpoint, replays the autoregressive
 trajectory, and produces per-trajectory metrics with bootstrap standard
